@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.DataProtection.Repositories;
 using Core.Interfaces;
 using Core.Specifications;
+using API.RequestHelpers; 
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController(IGenericRepository<Product> repo) : ControllerBase
+  
+    public class ProductsController(IGenericRepository<Product> repo) : BaseApiController
     {
         /* aşağıdaki kod bloğu yerine primary constructor gerçekleştirdik 
         private readonly StoreContext context;
@@ -25,11 +18,17 @@ namespace API.Controllers
         }
         */
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? type, string? sort)
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductSpecParams productSpecParams)
         {
-            var spec = new ProductSpecification(brand, type, sort);
-            var products = await repo.ListAsync(spec);
-            return Ok (products);
+            //[FromQuery] özniteliği, parametreleri HTTP sorgu dizesinden (query string) almak için kullanılır.
+            /*
+            ASP.NET Core, gelen sorgu dizesi parametrelerini ProductSpecParams sınıfının uygun özelliklerine otomatik olarak eşler. 
+            Bu, manuel olarak parametre okuma ve eşleştirme ihtiyacını ortadan kaldırır.*/ 
+            var spec = new ProductSpecification(productSpecParams);
+            
+            return await CreatePagedResult(repo, spec, productSpecParams.PageIndex, productSpecParams.PageSize);
+            
+            
         }
 
         [HttpGet("{id:int}")] //api/products/2
