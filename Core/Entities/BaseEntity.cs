@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
+    //tt
     public class BaseEntity
     {
         public int ID { get; set; }
