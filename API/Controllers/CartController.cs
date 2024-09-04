@@ -15,7 +15,7 @@ namespace API.Controllers
         public async Task<ActionResult<ShoppingCart>> GetCartById (string id)
         {
             var cart = await cartService.GetCartAsync(id);
-            return Ok(cart?? new ShoppingCart{ID=id});
+            return Ok(cart?? new ShoppingCart{Id=id});
         }
 
         [HttpPost]
