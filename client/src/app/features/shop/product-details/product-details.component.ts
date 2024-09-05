@@ -71,7 +71,7 @@ export class ProductDetailsComponent implements OnInit{
   }
 
   updateQuantityInCart(){
-    this.quantityInCart = this.cartService.cart()?.items.find(x=>x.productId === this.product?.id)?.quantity||0
+    this.quantityInCart = this.cartService.cart()?.items.find(x=>x.productID === this.product?.id)?.quantity||0
     this.quantity = this.quantityInCart||1;
   }
 

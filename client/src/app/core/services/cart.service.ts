@@ -12,6 +12,7 @@ export class CartService {
   baseUrl = environment.apiUrl;
   private http = inject(HttpClient);
   cart = signal<Cart | null>(null);
+
   itemCount = computed(() => {
     return this.cart()?.items.reduce((sum, item) => sum + item.quantity, 0)
   });
@@ -46,7 +47,7 @@ export class CartService {
   }
 
   addItemToCart(item: CartItem | Product, quantity = 1) {
-    const cart = this.cart() ?? this.createCart()
+    const cart = this.cart() ?? this.createCart();
 
     if (this.isProduct(item)) {
       console.log("product olduğu anlaşıldı")
@@ -60,7 +61,7 @@ export class CartService {
   removeItemFromCart(productId: number, quantity = 1) {
     const cart = this.cart();
     if (!cart) return;
-    const index = cart.items.findIndex(x => x.productId === productId);
+    const index = cart.items.findIndex(x => x.productID === productId);
     if (index !== -1) {
       if (cart.items[index].quantity > quantity) {
         cart.items[index].quantity -= quantity;
@@ -85,7 +86,26 @@ export class CartService {
   }
 
   private addOrUpdateItem(items: CartItem[], item: CartItem, quantity: number): CartItem[] {
-    const index = items.findIndex(existingItem => existingItem.productId === item.productId);
+
+    //Hata çözümünde kullandım : 
+
+    // // Log items and item being processed for debugging
+    // console.log("Items:", items);
+    // console.log("Item to Add/Update:", item);
+
+    // // Check data types of productId
+    // console.log("Type of item.productId:", typeof item.productID);
+    // this.cart()?.items.forEach(existingItem => {
+    //   console.log("Type of existingItem.productId:", typeof existingItem.productID);
+    // });
+
+
+    // if (item.productID === undefined) {
+    //   console.error("Item productId is undefined");
+    //   return items;
+    // }
+
+    const index = items.findIndex(existingItem => existingItem.productID == item.productID);
     console.log("Index", index)
 
     if (index === -1) {
@@ -109,7 +129,7 @@ export class CartService {
 
   private mapProductToCartItem(item: Product): CartItem {
     return {
-      productId: item.id,
+      productID: item.id,
       productName: item.name,
       price: item.price,
       quantity: 0,

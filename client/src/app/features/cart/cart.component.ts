@@ -5,6 +5,7 @@ import { OrderSummaryComponent } from "../../shared/components/order-summary/ord
 import { CartItem } from '../../shared/models/cart';
 import { CommonModule } from '@angular/common';
 import { InitService } from '../../core/services/init.service';
+import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
 
 
 
@@ -17,8 +18,9 @@ import { InitService } from '../../core/services/init.service';
   imports: [
     CartItemComponent,
     OrderSummaryComponent,
-    CommonModule
-  ],
+    CommonModule,
+    EmptyStateComponent
+],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })

@@ -19,19 +19,19 @@ import { CartService } from '../../../core/services/cart.service';
   styleUrl: './cart-item.component.scss'
 })
 export class CartItemComponent {
-  @Input() item!: CartItem;
-  //item = input.required<CartItem>();
+  // @Input() item!: CartItem;
+  item = input.required<CartItem>();
   cartService = inject(CartService)
 
   incrementQuantity(){
-    this.cartService.addItemToCart(this.item);
+    this.cartService.addItemToCart(this.item());
   }
 
   decrementQuantity(){
-    this.cartService.removeItemFromCart(this.item.productId);
+    this.cartService.removeItemFromCart(this.item().productID);
   }
 
   removeItemFromCart(){
-    this.cartService.removeItemFromCart(this.item.productId, this.item.quantity);
+    this.cartService.removeItemFromCart(this.item().productID, this.item().quantity);
   }
 }
