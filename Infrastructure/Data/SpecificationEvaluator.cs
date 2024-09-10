@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
@@ -32,6 +33,9 @@ namespace Infrastructure.Data
             {
                 query = query.Skip(spec.Skip).Take(spec.Take);
             }
+
+            query =spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+            query =spec.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
 
 
             return query;
