@@ -1,4 +1,5 @@
 using API.Middleware;
+using API.SignalR;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
@@ -37,6 +38,8 @@ builder.Services.AddIdentityApiEndpoints<AppUser>()
 
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+builder.Services.AddSignalR();
+
 
 var app = builder.Build();
 
@@ -48,8 +51,13 @@ app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 .WithOrigins("http://localhost:4200", "https://localhost:4200"));
 //normalde http:5000 den https 5001 den dinleniyordu 
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>(); // api/login
+
+app.MapHub<NotificationHub>("/hub/notifications");
 
 //seed Data için
 try

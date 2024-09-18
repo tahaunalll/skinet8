@@ -19,9 +19,10 @@
                 @for(item of cartService.cart()?.items; track item.productID){
                 <tr>
                     <td class="py-4">
-                        <div class="flex items-center gap-4"></div>
+                        <div class="flex items-center gap-4">
                         <img src="{{item.pictureUrl}}" alt="product image" class="w-10 h-10">
                         <span>{{item.productName}}</span>
+                    </div>
                     </td>
                     <td class="p-4">x{{item.quantity}}</td>
                     <td class="p-4 text-right">{{item.price |currency}}</td>
